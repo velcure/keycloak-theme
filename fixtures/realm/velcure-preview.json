@@ -48,7 +48,10 @@
         }
       ],
       "realmRoles": ["default-roles-velcure-preview"],
-      "groups": ["/Velcure Preview"]
+      "groups": ["/Velcure Preview"],
+      "attributes": {
+        "locale": ["de"]
+      }
     }
   ],
   "browserFlow": "browser-stepup",

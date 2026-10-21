@@ -45,6 +45,16 @@ export function sanitizeAccount(body, locale) {
 }
 export async function writeAccountFixtures(captures) {
   const config = JSON.parse(await readFile("keycloak-version.json", "utf8"));
+  const realm = JSON.parse(
+    await readFile("fixtures/realm/velcure-preview.json", "utf8"),
+  );
+  const profile = realm.users[0];
+  const escapeAttribute = (value) =>
+    String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;");
   for (const locale of ["de", "en"])
     for (const page of pages) {
       const entry = captures.find(
@@ -52,10 +62,26 @@ export async function writeAccountFixtures(captures) {
       );
       if (!entry?.body || !entry.heading)
         throw new Error(`Missing account capture: ${locale}/${page.id}`);
+      let body = sanitizeAccount(entry.body, locale);
+      if (page.id === "personal-info") {
+        body = body.replace(/<input\b[^>]*>/g, (input) => {
+          const id = input.match(/id="([^"]+)"/)?.[1];
+          if (
+            !id ||
+            !["username", "email", "firstName", "lastName"].includes(id)
+          )
+            return input;
+          // React keeps controlled values as DOM properties. Rehydrate only the
+          // four public profile fields from the same disposable realm fixture.
+          return input
+            .replace(/ value="[^"]*"/, "")
+            .replace(/>$/, ` value="${escapeAttribute(profile[id])}">`);
+        });
+      }
       await mkdir(`fixtures/account/${locale}`, { recursive: true });
       await writeFile(
         `fixtures/account/${locale}/${page.id}.html`,
-        `${sanitizeAccount(entry.body, locale)}\n`,
+        `${body}\n`,
       );
     }
   await writeFile(

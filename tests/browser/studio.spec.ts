@@ -69,6 +69,7 @@ test("account catalog supports both languages and its preview cannot mutate real
   await expect(frame.getByTestId("page-heading")).toHaveText(
     "Persönliche Angaben",
   );
+  await expect(frame.locator("#firstName")).toHaveValue("Alex");
   await frame.locator("#save-btn").click();
   await expect(frame.getByRole("status")).toContainText("Visuelle Vorschau");
   await page.getByRole("link", { name: "English", exact: true }).click();
