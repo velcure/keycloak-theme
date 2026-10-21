@@ -86,3 +86,48 @@ test("container and preview fixture use the explicitly tested Keycloak version",
     config.themesSha256 && config.vendorSha256 && config.freemarkerSha256,
   );
 });
+
+test("Account Console extends the native application without replacing its authentication runtime", async () => {
+  const properties = await read("themes/velcure/account/theme.properties");
+  assert.match(properties, /^parent=keycloak\.v3$/m);
+  assert.doesNotMatch(properties, /^scripts=/m);
+  const fixture = JSON.parse(await read("fixtures/realm/velcure-preview.json"));
+  assert.equal(fixture.accountTheme, "velcure");
+  assert.ok(
+    fixture.users[0].realmRoles.includes("default-roles-velcure-preview"),
+  );
+  assert.match(
+    await read("scripts/build-theme.mjs"),
+    /"login", "email", "account"/,
+  );
+});
+
+test("Account visual fixtures are versioned, token-free and use only isolated assets", async () => {
+  const config = JSON.parse(await read("keycloak-version.json"));
+  const metadata = JSON.parse(await read("fixtures/account/metadata.json"));
+  assert.equal(metadata.keycloak, config.version);
+  assert.equal(metadata.accountSha256, config.accountSha256);
+  const pages = JSON.parse(await read("src/lib/account-pages.json"));
+  for (const page of pages)
+    for (const locale of ["de", "en"]) {
+      const fixture = await read(`fixtures/account/${locale}/${page.id}.html`);
+      assert.match(fixture, /data-testid="page-heading"/);
+      assert.doesNotMatch(
+        fixture,
+        /<script\b|session_state=|session_code=|access_token|id_token|127\.0\.0\.1:8082/,
+      );
+      const preview = await read(
+        `.cache/previews/account/${page.id}/${locale}-default.html`,
+      );
+      assert.match(
+        preview,
+        /\/theme-resources\/account\/css\/velcure-account\.css/,
+      );
+      assert.match(preview, /data-account-preview/);
+    }
+  for (const locale of ["de", "en"]) {
+    const methods = await read(`fixtures/account/${locale}/signing-in.html`);
+    assert.match(methods, /two-factor-categ-title/);
+    assert.match(methods, /passwordless-categ-title/);
+  }
+});

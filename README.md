@@ -5,7 +5,7 @@
 
 [Velcure](https://www.velcure.de) · [Container auf GHCR](https://github.com/velcure/keycloak-theme/pkgs/container/keycloak-theme) · [Releases und Theme-JAR](https://github.com/velcure/keycloak-theme/releases)
 
-Native, serverseitig gerenderte Login- und E-Mail-Themes im Velcure-Branding. Ein Astro-SSR-Studio zeigt dieselben FreeMarker-Dateien mit isolierten Testdaten: 40 Login-Seiten, 18 E-Mail-Typen, Deutsch/Englisch, Mobilansicht und Fehlerzustände.
+Native Login-, Account- und E-Mail-Themes im Velcure-Branding. Das Astro-SSR-Studio zeigt 40 serverseitig gerenderte Login-Seiten, 18 E-Mail-Typen und neun native Account-Ansichten mit isolierten Testdaten, Deutsch/Englisch und Mobilansicht. Login-Seiten enthalten außerdem Fehlerzustände.
 
 ## Lokal prüfen
 
@@ -52,6 +52,31 @@ pnpm test:e2e
 - Browser-Tests prüfen SSR ohne JavaScript, Passwortsichtbarkeit, Mobilansicht und E-Mail-Formate.
 - CI stellt `artifacts/velcure-keycloak-theme.jar` als Download bereit.
 
+## Kontoverwaltung
+
+Das Account-Theme erweitert die mitgelieferte `keycloak.v3` Account Console. Keycloaks React-Anwendung, Account-API, OIDC-Anmeldung und Berechtigungsprüfungen bleiben unverändert. Das Theme ergänzt Logo, lokale Schriften, Petrol-/Mint-Farben, Navigation, Formulare, Tabellen, Dialoge und responsive Abstände. Deutsche Texte verwenden die Du-Ansprache.
+
+Abgedeckt sind persönliche Angaben, Passwort, Authenticator, Passkeys, Wiederherstellungscodes, Geräte und Sitzungen, verknüpfte Konten, Anwendungen, Gruppen, Organisationen, Ressourcen/Freigaben sowie digitale Nachweise. Die Verfügbarkeit hängt von Realm-Funktionen, Required Actions, Rollen und konfigurierten Anbietern ab. Das Theme aktiviert keine zusätzlichen Rechte oder Produktionsfunktionen.
+
+Im Studio: <http://127.0.0.1:4321/preview/account/personal-info>. Die neun Account-Ansichten sind bereinigte DOM-Aufnahmen der echten Console in Deutsch und Englisch. Sie verwenden die offiziellen, prüfsummengeprüften Keycloak-Styles und dasselbe Velcure-CSS wie das produktive Theme. Die Studio-Vorschau speichert keine Änderungen und simuliert keine Anmeldung. Die Navigation und Mobilansicht sind bedienbar; für vollständige Aktionen führt **Im lokalen Keycloak testen** zur echten Console.
+
+```sh
+docker compose up -d --build
+pnpm test:account
+```
+
+Live-Console: <http://127.0.0.1:8082/realms/velcure-preview/account/>. Testkonto: `alex@beispiel.invalid` / `preview-only-change-me`. Der isolierte Realm enthält ausschließlich Testdaten und einen absichtlich nicht erreichbaren SSO-Anbieter unter `sso.example.invalid`. Wallet-Ausstellung und Ressourcenfreigaben benötigen zusätzlich fachliche Testkonfiguration. `oid4vc-vci` und `recovery-codes` sind ausschließlich für diese lokale Vorschau aktiviert.
+
+`pnpm test:account` prüft alle neun nativen Routen, echte Profiländerungen, den Übergang zu Passwort- und OTP-Einrichtung sowie die mobile Navigation. Neue Passkeys oder Passwörter werden nicht automatisch angelegt. Native Einrichtungs- und Bestätigungsseiten sind zusätzlich im Login-Katalog enthalten.
+
+Die Account-Aufnahmen unter `fixtures/account` stammen aus der in `metadata.json` angegebenen Keycloak-Version und enthalten keine Tokens. Bei einem Keycloak-Upgrade müssen sie mit der isolierten Console neu erfasst werden; `scripts/account-fixtures.mjs <captures.json>` bereinigt die Aufnahmen. Erwartetes Format: `[{ "id": "personal-info", "locale": "de", "heading": "Persönliche Angaben", "body": "<div id=...>...</div>" }, ...]` für alle IDs in `src/lib/account-pages.json` und beide Sprachen. `pnpm render` blockiert veraltete Aufnahmen. Das Studio-Skript `public/account-preview.js` wird nicht in das Theme-JAR oder das Keycloak-Image aufgenommen.
+
+Für die Integration lautet die Realm-Konfiguration:
+
+```json
+{ "loginTheme": "velcure", "accountTheme": "velcure", "emailTheme": "velcure" }
+```
+
 ## Im Keycloak Operator verwenden
 
 Es gibt zwei Installationswege:
@@ -59,7 +84,7 @@ Es gibt zwei Installationswege:
 1. **Theme-JAR** in ein eigenes Keycloak-Image unter `/opt/keycloak/providers/` übernehmen; anschließend den üblichen Keycloak-Image-Build durchführen.
 2. **Dieses Dockerfile** verwenden. Es erweitert das offizielle Keycloak-Image und kopiert das native Theme nach `/opt/keycloak/themes/velcure`.
 
-Das gewünschte Image über `spec.image` des Keycloak-Operators setzen. Im betreffenden Realm unter **Realm settings → Themes** sowohl **Login theme** als auch **Email theme** auf `velcure` stellen. Theme-Änderungen benötigen keine Anpassung der Browser-Flows. SMTP-Konfiguration und produktive Benutzer bleiben beim Realm.
+Das gewünschte Image über `spec.image` des Keycloak-Operators setzen. Im betreffenden Realm unter **Realm settings → Themes** **Login theme**, **Account theme** und **Email theme** auf `velcure` stellen. Theme-Änderungen benötigen keine Anpassung der Browser-Flows. SMTP-Konfiguration und produktive Benutzer bleiben beim Realm.
 
 ### Container-Tags
 
@@ -105,13 +130,14 @@ Dependabot öffnet **einmal monatlich** Updates für npm, GitHub Actions und Doc
 ```text
 themes/velcure/login/   Native Templates, CSS, Texte, Fonts und Logos
 themes/velcure/email/   E-Mail-Rahmen, HTML-/Text-Anpassungen und Übersetzungen
+themes/velcure/account/ Native keycloak.v3 Account Console im Velcure-Branding
 src/                   Astro-SSR-Studio und isolierte Ressourcen-Routen
 scripts/               Echter FreeMarker-Renderer und JAR-Paketierung
 fixtures/              Lokaler, isolierter Test-Realm
 vendor/keycloak/        Versionierte Upstream-Referenzen für die Vorschau
 ```
 
-Das Login-Theme erweitert `keycloak.v2`; das E-Mail-Theme erweitert `keycloak`. Nicht überschriebene Seiten bleiben native Keycloak-Seiten und nutzen das gemeinsame Velcure-Layout. `select-authenticator.ftl` verwendet echte Submit-Buttons statt klickbarer Container, damit die Methodenwahl per Tastatur funktioniert. Die Registrierungsseite ergänzt den Datenschutzhinweis. In E-Mails werden PNG-Logos, Tabellen, Inline-Styles und Systemschriften verwendet; Textalternativen bleiben erhalten.
+Das Login-Theme erweitert `keycloak.v2`, das Account-Theme `keycloak.v3` und das E-Mail-Theme `keycloak`. Nicht überschriebene Seiten bleiben native Keycloak-Seiten und nutzen das gemeinsame Velcure-Layout. `select-authenticator.ftl` verwendet echte Submit-Buttons statt klickbarer Container, damit die Methodenwahl per Tastatur funktioniert. Die Registrierungsseite ergänzt den Datenschutzhinweis. In E-Mails werden PNG-Logos, Tabellen, Inline-Styles und Systemschriften verwendet; Textalternativen bleiben erhalten.
 
 Brand-Quelle: `velcure/lp`, Release `v0.6.0`, Nah + Fokus. Assets und Tokens sind als versionierter Snapshot enthalten. Die Marketing-App und das Core-Projekt sind keine Laufzeitabhängigkeiten und werden durch dieses Repository nicht geändert.
 

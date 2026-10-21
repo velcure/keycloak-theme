@@ -2,6 +2,7 @@
 import { catalog, errorPages, label } from "../../../lib/catalog";
 import "../../../styles/studio.css";
 import version from "../../../../keycloak-version.json";
+import accountPages from "../../../lib/account-pages.json";
 
 const entries = await catalog();
 const { type, id } = Astro.params;
@@ -20,6 +21,7 @@ const format =
   Astro.url.searchParams.get("format") === "text" && type === "email"
     ? "text"
     : "html";
+const accountPath = accountPages.find((page) => page.id === id)?.path ?? "";
 const visible = entries.filter((entry) => entry.type === type);
 const href = (params: Record<string, string>) =>
   `?${new URLSearchParams({ locale, state, viewport, format, ...params })}`;
@@ -35,6 +37,7 @@ const href = (params: Record<string, string>) =>
         <nav class="theme-tabs" aria-label="Theme-Bereich">
           <a href={`/preview/login/login-username?locale=${locale}`} aria-current={type === "login" ? "page" : undefined}>Login <span>{entries.filter(e => e.type === "login").length}</span></a>
           <a href={`/preview/email/password-reset?locale=${locale}`} aria-current={type === "email" ? "page" : undefined}>E-Mails <span>{entries.filter(e => e.type === "email").length}</span></a>
+          <a href={`/preview/account/personal-info?locale=${locale}`} aria-current={type === "account" ? "page" : undefined}>Konto <span>{accountPages.length}</span></a>
         </nav>
         <nav class="page-nav" aria-label="Einzelne Ansichten">
           {visible.map((entry) => <a href={`/preview/${entry.type}/${entry.id}?${new URLSearchParams({ locale, viewport })}`} aria-current={entry.id === id ? "page" : undefined}>{label(entry)}</a>)}
@@ -42,18 +45,19 @@ const href = (params: Record<string, string>) =>
         <div class="sidebar-footer"><span>Keycloak {version.version}</span><span>Velcure · Nah + Fokus</span></div>
       </aside>
       <main class="workspace">
-        <header class="workspace-header"><div><p class="eyebrow">{type === "email" ? "E-Mail-Theme" : "Login-Theme"}</p><h1>{label(current)}</h1><p class="template-name">{id}.ftl</p></div><a class="repo-link" href="https://github.com/velcure/keycloak-theme" target="_blank" rel="noreferrer">Repository ↗</a></header>
+        <header class="workspace-header"><div><p class="eyebrow">{type === "email" ? "E-Mail-Theme" : type === "account" ? "Kontoverwaltung" : "Login-Theme"}</p><h1>{label(current)}</h1><p class="template-name">{type === "account" ? `Account Console · ${version.version}` : `${id}.ftl`}</p></div><a class="repo-link" href="https://github.com/velcure/keycloak-theme" target="_blank" rel="noreferrer">Repository ↗</a></header>
         <div class="toolbar" aria-label="Vorschau-Einstellungen">
           <div class="segmented" aria-label="Sprache"><a href={href({ locale: "de" })} aria-current={locale === "de" ? "true" : undefined}>Deutsch</a><a href={href({ locale: "en" })} aria-current={locale === "en" ? "true" : undefined}>English</a></div>
           <div class="segmented" aria-label="Bildschirmgröße"><a href={href({ viewport: "desktop" })} aria-current={viewport === "desktop" ? "true" : undefined}>Desktop</a><a href={href({ viewport: "mobile" })} aria-current={viewport === "mobile" ? "true" : undefined}>Mobil</a></div>
           {type === "login" && errorPages.has(id ?? "") && <div class="segmented" aria-label="Formularzustand"><a href={href({ state: "default" })} aria-current={state === "default" ? "true" : undefined}>Standard</a><a href={href({ state: "error" })} aria-current={state === "error" ? "true" : undefined}>Fehler</a></div>}
           {type === "email" && <div class="segmented" aria-label="E-Mail-Format"><a href={href({ format: "html" })} aria-current={format === "html" ? "true" : undefined}>HTML</a><a href={href({ format: "text" })} aria-current={format === "text" ? "true" : undefined}>Text</a></div>}
+          {type === "account" && <a class="live-account-link" href={`http://127.0.0.1:8082/realms/velcure-preview/account/${accountPath}`} target="_blank" rel="noreferrer">Im lokalen Keycloak testen ↗</a>}
           <a class="open-preview" href={`/render/${type}/${id}?${new URLSearchParams({ locale, state, format })}`} target="_blank" rel="noreferrer">Einzeln öffnen ↗</a>
         </div>
         <section class:list={["preview-stage", viewport]} aria-label="Gerenderte Vorschau">
-          <div class="preview-window"><div class="preview-window-bar"><span class="status-dot"></span><span>{type === "email" ? "E-Mail-Vorschau" : "login.velcure · Vorschau"}</span><span>{viewport === "mobile" ? "390 px" : "Responsive"}</span></div><iframe title={`${label(current)} – ${locale}, ${state}`} src={`/render/${type}/${id}?${new URLSearchParams({ locale, state, format })}`} sandbox="allow-scripts allow-same-origin" /></div>
+          <div class="preview-window"><div class="preview-window-bar"><span class="status-dot"></span><span>{type === "email" ? "E-Mail-Vorschau" : type === "account" ? "Konto · Visuelle Vorschau" : "login.velcure · Vorschau"}</span><span>{viewport === "mobile" ? "390 px" : "Responsive"}</span></div><iframe title={`${label(current)} – ${locale}, ${state}`} src={`/render/${type}/${id}?${new URLSearchParams({ locale, state, format })}`} sandbox="allow-scripts allow-same-origin" /></div>
         </section>
-        <footer class="workspace-footer"><span>Native FreeMarker-Templates · Serverseitig gerendert</span><span>Testdaten · Kein Versand · Keine Anmeldung</span></footer>
+        <footer class="workspace-footer"><span>{type === "account" ? "Native Account-Ansichten · Gemeinsames Theme-CSS" : "Native FreeMarker-Templates · Serverseitig gerendert"}</span><span>{type === "account" ? "Visuelle Testdaten · Änderungen nur im lokalen Keycloak" : "Testdaten · Kein Versand · Keine Anmeldung"}</span></footer>
       </main>
     </div>
   </body>

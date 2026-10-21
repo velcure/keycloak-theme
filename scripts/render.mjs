@@ -2,6 +2,7 @@ import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { cp, mkdir, readFile, writeFile } from "node:fs/promises";
 import QRCode from "qrcode";
+import { renderAccount } from "./render-account.mjs";
 
 const config = JSON.parse(await readFile("keycloak-version.json", "utf8"));
 const jar = `.cache/freemarker-${config.freemarker}.jar`;
@@ -109,4 +110,5 @@ const run = spawnSync(
   ["--class-path", jar, "scripts/RenderPreviews.java"],
   { stdio: "inherit" },
 );
-process.exitCode = run.status ?? 1;
+if (run.status !== 0) throw new Error("FreeMarker rendering failed");
+await renderAccount();

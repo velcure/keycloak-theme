@@ -1,0 +1,5 @@
+{
+  "keycloak": "26.8.1",
+  "accountSha256": "7778c84f8d9a55fad34d918534e30037cb46174bc78eb41d10621567b799496b",
+  "source": "Native keycloak.v3 Account Console, isolated velcure-preview realm. Visual fixtures only; no authentication runtime."
+}
