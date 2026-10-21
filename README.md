@@ -1,5 +1,10 @@
 # Velcure Keycloak Theme
 
+[![CI](https://github.com/velcure/keycloak-theme/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/velcure/keycloak-theme/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/velcure/keycloak-theme)](https://github.com/velcure/keycloak-theme/releases)
+
+[Velcure](https://www.velcure.de) · [Container auf GHCR](https://github.com/velcure/keycloak-theme/pkgs/container/keycloak-theme) · [Releases und Theme-JAR](https://github.com/velcure/keycloak-theme/releases)
+
 Native, serverseitig gerenderte Login- und E-Mail-Themes im Velcure-Branding. Ein Astro-SSR-Studio zeigt dieselben FreeMarker-Dateien mit isolierten Testdaten: 40 Login-Seiten, 18 E-Mail-Typen, Deutsch/Englisch, Mobilansicht und Fehlerzustände.
 
 ## Lokal prüfen
@@ -56,7 +61,36 @@ Es gibt zwei Installationswege:
 
 Das gewünschte Image über `spec.image` des Keycloak-Operators setzen. Im betreffenden Realm unter **Realm settings → Themes** sowohl **Login theme** als auch **Email theme** auf `velcure` stellen. Theme-Änderungen benötigen keine Anpassung der Browser-Flows. SMTP-Konfiguration und produktive Benutzer bleiben beim Realm.
 
-Ein Git-Tag `v*` erstellt ein GitHub-Release mit JAR sowie `ghcr.io/velcure/keycloak-theme:<tag>`. Das ersetzt keine Operator-Konfiguration und führt keinen produktiven Rollout aus.
+### Container-Tags
+
+Image: `ghcr.io/velcure/keycloak-theme` — vollständiges Keycloak-Image mit installiertem Theme, für **linux/amd64** und **linux/arm64**.
+
+| Tag | Bedeutung |
+| --- | --- |
+| `main` | Letzter erfolgreicher Build von `main` |
+| `sha-<vollständiger Commit-SHA>` | Build eines konkreten Commits |
+| `vX.Y.Z` und `X.Y.Z` | Freigegebene Version |
+| `X.Y` | Neueste freigegebene Patch-Version dieser Minor-Reihe |
+| `latest` | Letzte stabile Freigabe; folgt nicht jedem Commit |
+
+```sh
+docker pull ghcr.io/velcure/keycloak-theme:main
+```
+
+Produktive Operator-Konfigurationen sollten eine freigegebene Version oder einen Digest verwenden. Das Theme wird im Realm weiterhin über den Namen `velcure` gewählt. Das Bereitstellen eines Images führt keinen Operator-Rollout aus.
+
+### Release-Please-Ablauf
+
+1. Conventional Commits auf `main` starten Typecheck, Biome, FreeMarker-, Browser- und Build-Prüfungen.
+2. Erst nach erfolgreichen Prüfungen veröffentlicht CI das Image als `main` und `sha-<Commit>` auf GHCR, einschließlich SBOM und Build-Provenienz.
+3. Die bestehende GitHub-App `velcure-release` erstellt oder aktualisiert den Release-PR mit Versionsnummer und Changelog. Ihre PRs starten die regulären Checks.
+4. Nach dem Merge des Release-PRs läuft die CI erneut. Release Please erstellt den Git-Tag und das GitHub-Release; anschließend erhalten **dieselben geprüften Image-Bytes** die Versionstags und `latest`. Es wird kein zweites Release-Image gebaut.
+5. Das geprüfte Theme-JAR und `SHA256SUMS` werden als Release-Downloads angehängt.
+
+Die App nutzt die Organisationsvariable `RELEASE_APP_CLIENT_ID` und das Organisationssecret `RELEASE_APP_PRIVATE_KEY`, jeweils gezielt für dieses Repository freigegeben. GHCR verwendet das kurzlebige `GITHUB_TOKEN`. Schlüssel gehören nicht in das Repository.
+
+Fehlgeschlagene Veröffentlichungen können über **Re-run failed jobs** wiederholt werden. Ein erneuter vollständiger CI-Lauf am gleichen Release-Commit erkennt dessen vorhandenes Release und vervollständigt die Veröffentlichung. Läuft bereits ein neuerer Commit auf `main`, legt der veraltete Lauf keinen neuen Release-PR an.
+
 
 ## Versionen und Updates
 
@@ -80,3 +114,9 @@ Das Login-Theme erweitert `keycloak.v2`; das E-Mail-Theme erweitert `keycloak`. 
 Brand-Quelle: `velcure/lp`, Release `v0.6.0`, Nah + Fokus. Assets und Tokens sind als versionierter Snapshot enthalten. Die Marketing-App und das Core-Projekt sind keine Laufzeitabhängigkeiten und werden durch dieses Repository nicht geändert.
 
 Die HTML-Vorschau ersetzt keinen Test in Outlook, Gmail und Apple Mail. Ebenso simuliert der Katalog keine tatsächliche Passkey-Registrierung, SSO-Weiterleitung oder produktive Realm-Regeln; dafür dient die isolierte Keycloak-Instanz.
+
+## Sichtbarkeit und Lizenz
+
+Dieses Repository ist öffentlich einsehbar. Die ursprünglichen Velcure-Inhalte und Markenassets bleiben unter der bestehenden proprietären Lizenz; öffentliche Sichtbarkeit ist keine Freigabe der Marke oder eine zusätzliche Nutzungslizenz. Die separat mitgelieferten Keycloak- und Font-Lizenzen gelten unverändert. Siehe [LICENSE](LICENSE) und [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+Die Zugangsdaten in der lokalen Realm-Fixture sind ausschließlich absichtlich veröffentlichte Testdaten für die isolierte, an Loopback gebundene Entwicklungsumgebung.

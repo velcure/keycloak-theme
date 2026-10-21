@@ -13,7 +13,7 @@
 <tr><td style="background-color:#ffffff;padding:28px 32px 32px;font-size:16px;line-height:1.65;border-radius:0 0 20px 20px;">
 ${content?replace('<a ', '<a style="display:inline-block;background-color:#032f2e;color:#ffffff;text-decoration:none;padding:12px 20px;border-radius:12px;font-weight:bold;overflow-wrap:anywhere;" ')?no_esc}
 </td></tr>
-<tr><td style="padding:22px 16px 0;font-size:12px;line-height:1.7;color:#4c6258;text-align:center;">Velcure GmbH i. G.<br>Kurfürstendamm 106 · 10711 Berlin</td></tr>
+<tr><td style="padding:22px 16px 0;font-size:12px;line-height:1.7;color:#4c6258;text-align:center;">Velcure GmbH<br>Kurfürstendamm 106 · 10711 Berlin</td></tr>
 </table>
 </td></tr></table>
 </body></html>
