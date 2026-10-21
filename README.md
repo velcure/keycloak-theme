@@ -77,6 +77,8 @@ Image: `ghcr.io/velcure/keycloak-theme` — vollständiges Keycloak-Image mit in
 docker pull ghcr.io/velcure/keycloak-theme:main
 ```
 
+Falls das GHCR-Package privat ist, ist vorher `docker login ghcr.io` mit einem Token mit `read:packages` nötig. Öffentliche Packages können anonym geladen werden. Die Paket-Sichtbarkeit wird separat von der Repository-Sichtbarkeit verwaltet. [GitHub-Dokumentation](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
+
 Produktive Operator-Konfigurationen sollten eine freigegebene Version oder einen Digest verwenden. Das Theme wird im Realm weiterhin über den Namen `velcure` gewählt. Das Bereitstellen eines Images führt keinen Operator-Rollout aus.
 
 ### Release-Please-Ablauf
