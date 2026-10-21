@@ -1,0 +1,9 @@
+{
+  "version": "26.8.1",
+  "image": "quay.io/keycloak/keycloak:26.8.1",
+  "upstream": "https://github.com/keycloak/keycloak/tree/26.8.1",
+  "freemarker": "2.3.35",
+  "freemarkerSha256": "0fac87dddd78f1223139e8ef88e819c7f483c0a3835cdf5982ad5e4576d1d896",
+  "themesSha256": "d4407dd30a32f911b2755ac626bd5b76dd50b4b2e06b4d975a49c16bbdeab5cb",
+  "vendorSha256": "0551043dd2d36a8c96963731d5e91307ff0455c248e52b6d87996f1e49c97e1f"
+}

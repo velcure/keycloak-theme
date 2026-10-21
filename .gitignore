@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.astro/
+.cache/
+public/previews/
+playwright-report/
+test-results/
+.env
+.env.*
+!.env.example
+.DS_Store
+.vercel/
+*.log
+artifacts/

@@ -1,0 +1,63 @@
+{
+  "color": {
+    "canvas": "#f3f5f7",
+    "paper": "#ffffff",
+    "paper-2": "#f8f9fb",
+    "ink": "#0e1a24",
+    "muted": "#4a5866",
+    "faint": "#5e6b7e",
+    "line": "#dde2e8",
+    "line-strong": "#c3ccd6",
+    "brand": "#1c7a4b",
+    "brand-hover": "#16633d",
+    "brand-tint": "#e6f3ec",
+    "on-brand": "#ffffff",
+    "safe": "#1c7a4b",
+    "safe-bright": "#2bb673",
+    "safe-tint": "#e6f3ec",
+    "warn": "#f2a900",
+    "warn-ink": "#7c5200",
+    "warn-tint": "#fdf3d9",
+    "mandatory": "#1d5aa6",
+    "mandatory-tint": "#e7eef8",
+    "prohibit": "#c0262d",
+    "prohibit-tint": "#fbe9e9"
+  },
+  "space": {
+    "xs": "0.25rem",
+    "sm": "0.5rem",
+    "md": "0.75rem",
+    "base": "1rem",
+    "lg": "1.5rem",
+    "xl": "2rem",
+    "2xl": "3rem",
+    "3xl": "4rem",
+    "4xl": "6rem"
+  },
+  "radius": {
+    "panel": "8px",
+    "control": "6px",
+    "chip": "4px"
+  },
+  "brand-surface": {
+    "dark": "#032f2e",
+    "on-dark": "#f0f7f3",
+    "muted": "#b6cdc4",
+    "hover": "#17413d",
+    "active": "#dcefe5",
+    "active-ink": "#032f2e",
+    "canvas": "#f2f6f3",
+    "line": "#315652"
+  },
+  "brand-radius": {
+    "small": "8px",
+    "control": "12px",
+    "panel": "20px",
+    "frame": "28px"
+  },
+  "brand-layout": {
+    "max": "128rem",
+    "gutter": "clamp(1.25rem, 4vw, 5rem)",
+    "section-gap": "clamp(3rem, 6vw, 6rem)"
+  }
+}

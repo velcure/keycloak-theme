@@ -1,0 +1,20 @@
+name: velcure-theme-review
+services:
+  keycloak:
+    build: .
+    command: ["start-dev", "--import-realm", "--spi-theme--static-max-age=-1", "--spi-theme--cache-themes=false", "--spi-theme--cache-templates=false"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: preview-admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: preview-only-change-me
+      KC_HTTP_ENABLED: "true"
+    ports:
+      - "127.0.0.1:8082:8080"
+    volumes:
+      - ./themes/velcure:/opt/keycloak/themes/velcure:ro
+      - ./fixtures/realm:/opt/keycloak/data/import:ro
+    depends_on:
+      - mailpit
+  mailpit:
+    image: axllent/mailpit:v1.31.6
+    ports:
+      - "127.0.0.1:8026:8025"
