@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
+import accountPages from "./account-pages.json";
 
-export type PageEntry = { type: "login" | "email"; id: string };
+export type PageEntry = { type: "login" | "email" | "account"; id: string };
 export const errorPages = new Set([
   "login",
   "register",
@@ -70,11 +71,16 @@ const names: Record<string, string> = {
   "workflow-notification": "Kontobenachrichtigung",
 };
 export function label(entry: PageEntry) {
+  if (entry.type === "account")
+    return accountPages.find((page) => page.id === entry.id)?.label ?? entry.id;
   return names[entry.id] ?? entry.id.replaceAll("-", " ");
 }
 export async function catalog(): Promise<PageEntry[]> {
   const entries: PageEntry[] = JSON.parse(
     await readFile(".cache/manifest.json", "utf8"),
+  );
+  entries.push(
+    ...accountPages.map((page) => ({ type: "account" as const, id: page.id })),
   );
   const priority = [
     "login-username",

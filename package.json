@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Native SSR Keycloak themes with an Astro SSR review studio",
+  "description": "Native Velcure Keycloak login, account and email themes with an Astro SSR review studio",
   "repository": {
     "type": "git",
     "url": "https://github.com/velcure/keycloak-theme.git"
@@ -23,7 +23,8 @@
     "format": "biome format --write .",
     "test": "node --test tests/*.test.mjs",
     "test:e2e": "playwright test",
-    "typecheck": "astro sync && tsc --noEmit"
+    "typecheck": "astro sync && tsc --noEmit",
+    "test:account": "playwright test --config playwright.account.config.ts"
   },
   "dependencies": {
     "@astrojs/node": "11.1.9",

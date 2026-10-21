@@ -9,7 +9,9 @@ await cp("themes/velcure", ".cache/theme-package/theme/velcure", {
 });
 await writeFile(
   ".cache/theme-package/META-INF/keycloak-themes.json",
-  JSON.stringify({ themes: [{ name: "velcure", types: ["login", "email"] }] }),
+  JSON.stringify({
+    themes: [{ name: "velcure", types: ["login", "email", "account"] }],
+  }),
 );
 const result = spawnSync(
   "jar",

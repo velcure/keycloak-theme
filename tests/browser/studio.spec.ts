@@ -60,3 +60,46 @@ test("email preview supports plaintext and HTML", async ({ page }) => {
     page.frameLocator("iframe").getByText(/https:\/\/login.example.invalid/),
   ).toBeVisible();
 });
+
+test("account catalog supports both languages and its preview cannot mutate real accounts", async ({
+  page,
+}) => {
+  await page.goto("/preview/account/personal-info");
+  const frame = page.frameLocator("iframe");
+  await expect(frame.getByTestId("page-heading")).toHaveText(
+    "Persönliche Angaben",
+  );
+  await expect(frame.locator("#firstName")).toHaveValue("Alex");
+  await frame.locator("#save-btn").click();
+  await expect(frame.getByRole("status")).toContainText("Visuelle Vorschau");
+  await page.getByRole("link", { name: "English", exact: true }).click();
+  await expect(frame.getByTestId("page-heading")).toHaveText("Personal info");
+  await page
+    .getByRole("link", { name: "Anmeldemethoden", exact: true })
+    .click();
+  await expect(
+    frame.getByRole("heading", { name: "Passwordless", exact: true }),
+  ).toBeVisible();
+});
+
+test("mobile account preview has working navigation without horizontal page overflow", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/render/account/personal-info");
+  await expect(page.locator("#nav-toggle")).toHaveAttribute(
+    "aria-expanded",
+    "false",
+  );
+  await page.locator("#nav-toggle").click();
+  await expect(
+    page.getByRole("link", { name: "Anwendungen", exact: true }),
+  ).toBeVisible();
+  await page.getByRole("link", { name: "Anwendungen", exact: true }).click();
+  await expect(page.getByTestId("page-heading")).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+});

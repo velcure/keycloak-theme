@@ -7,6 +7,7 @@ services:
       KC_BOOTSTRAP_ADMIN_USERNAME: preview-admin
       KC_BOOTSTRAP_ADMIN_PASSWORD: preview-only-change-me
       KC_HTTP_ENABLED: "true"
+      KC_FEATURES: "oid4vc-vci,recovery-codes"
     ports:
       - "127.0.0.1:8082:8080"
     volumes:

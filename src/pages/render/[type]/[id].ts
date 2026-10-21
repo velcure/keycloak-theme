@@ -25,6 +25,12 @@ export const GET: APIRoute = async ({ params, url }) => {
       "Content-Type": `${text ? "text/plain" : "text/html"}; charset=utf-8`,
       "X-Robots-Tag": "noindex, nofollow",
       "Cache-Control": "no-store",
+      ...(type === "account"
+        ? {
+            "Content-Security-Policy":
+              "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; form-action 'none'; frame-ancestors 'self'; base-uri 'none'",
+          }
+        : {}),
     },
   });
 };

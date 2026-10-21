@@ -1,0 +1,12 @@
+/* Only mimic the native toolbar's JS-managed visibility in static captures.
+   All shell geometry is shared with the actual Keycloak account theme. */
+@media (max-width: 1199px) {
+  [data-account-preview]
+    .pf-v5-c-toolbar__item:has([data-testid="options-toggle"]) {
+    display: none;
+  }
+  [data-account-preview]
+    .pf-v5-c-toolbar__item:has([data-testid="options-kebab-toggle"]) {
+    display: block;
+  }
+}

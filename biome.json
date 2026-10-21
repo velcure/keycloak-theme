@@ -9,7 +9,10 @@
       "!public/fonts",
       "!dist",
       "!.cache",
-      "!.astro"
+      "!.astro",
+      "!fixtures/account",
+      "!playwright-report",
+      "!test-results"
     ]
   },
   "formatter": {

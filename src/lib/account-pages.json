@@ -1,0 +1,31 @@
+[
+  { "id": "personal-info", "path": "", "label": "Persönliche Angaben" },
+  {
+    "id": "signing-in",
+    "path": "account-security/signing-in",
+    "label": "Anmeldemethoden"
+  },
+  {
+    "id": "device-activity",
+    "path": "account-security/device-activity",
+    "label": "Geräte und Sitzungen"
+  },
+  {
+    "id": "linked-accounts",
+    "path": "account-security/linked-accounts",
+    "label": "Verknüpfte Konten"
+  },
+  { "id": "applications", "path": "applications", "label": "Anwendungen" },
+  { "id": "groups", "path": "groups", "label": "Gruppen" },
+  { "id": "organizations", "path": "organizations", "label": "Organisationen" },
+  {
+    "id": "resources",
+    "path": "resources",
+    "label": "Ressourcen und Freigaben"
+  },
+  {
+    "id": "verifiable-credentials",
+    "path": "verifiable-credentials",
+    "label": "Digitale Nachweise"
+  }
+]

@@ -41,8 +41,37 @@ jobs:
           name: playwright-report
           path: playwright-report/
 
+  account-integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@v6.1.0
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: 26
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: docker compose up -d --build
+      - name: Wait for the isolated realm
+        run: curl --fail --silent --retry 40 --retry-all-errors --retry-delay 2 --max-time 5 http://127.0.0.1:8082/realms/velcure-preview/.well-known/openid-configuration > /dev/null
+      - run: pnpm test:account
+      - if: failure()
+        run: docker compose logs --no-color
+      - uses: actions/upload-artifact@v7.0.2
+        if: failure()
+        with:
+          name: account-playwright-report
+          path: |
+            playwright-report/account/
+            test-results/
+      - if: always()
+        run: docker compose down --volumes
+
   images:
-    needs: check
+    needs: [check, account-integration]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
@@ -80,7 +109,7 @@ jobs:
           labels: |
             org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
             org.opencontainers.image.title=Velcure Keycloak Theme
-            org.opencontainers.image.description=Native Velcure login and email themes for Keycloak
+            org.opencontainers.image.description=Native Velcure login, account and email themes for Keycloak
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.version=${{ steps.metadata.outputs.version }}
             org.opencontainers.image.licenses=LicenseRef-Velcure-Proprietary
@@ -91,7 +120,7 @@ jobs:
           sbom: true
 
   release:
-    needs: [check, images]
+    needs: [check, account-integration, images]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     permissions:
       contents: write
