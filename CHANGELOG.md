@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.1](https://github.com/velcure/keycloak-theme/compare/v0.1.0...v0.1.1) (2026-10-21)
+
+
+### Features
+
+* complete Velcure Account Console and preview catalog ([#2](https://github.com/velcure/keycloak-theme/issues/2)) ([0eb0f1a](https://github.com/velcure/keycloak-theme/commit/0eb0f1a66c9aa673c2003fb6fd052d426d2efcf4))
+
 ## 0.1.0 (2026-10-21)
 
 

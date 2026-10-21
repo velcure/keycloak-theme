@@ -1,6 +1,6 @@
 {
   "name": "@velcure/keycloak-theme",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "type": "module",
   "description": "Native Velcure Keycloak login, account and email themes with an Astro SSR review studio",
