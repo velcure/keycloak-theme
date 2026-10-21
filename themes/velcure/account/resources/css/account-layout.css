@@ -1,0 +1,265 @@
+/* Shared account shell, derived from the Brand Guidelines floating navigation.
+   Native Keycloak navigation state and controls remain unchanged. */
+:root {
+  --vc-radius-frame: 28px;
+  --vc-radius-panel: 20px;
+  --vc-radius-control: 12px;
+  --vc-shell-gutter: 12px;
+  --vc-sidebar-width: 272px;
+  --vc-sidebar-hover: #17413d;
+  --vc-sidebar-muted: #b6cdc4;
+  --vc-sidebar-line: #315652;
+  --vc-on-dark: #f0f7f3;
+}
+.pf-v5-c-page.pf-m-resize-observer {
+  box-sizing: border-box;
+  height: 100dvh;
+  max-height: none;
+  min-height: 0;
+  padding: var(--vc-shell-gutter);
+  column-gap: 24px;
+  row-gap: 0;
+  grid-template: "navigation header" 88px "navigation main" minmax(0, 1fr) / var(
+      --vc-sidebar-width
+    ) minmax(0, 1fr);
+}
+.pf-v5-c-page > .pf-v5-c-page__sidebar {
+  grid-area: navigation;
+  width: var(--vc-sidebar-width);
+  min-height: 0;
+  box-sizing: border-box;
+  padding: 100px 16px 20px;
+  border: 0;
+  border-radius: var(--vc-radius-frame);
+  background: var(--vc-petrol);
+  box-shadow: none;
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--vc-sidebar-line) transparent;
+}
+.pf-v5-c-page > .pf-v5-c-page__sidebar.pf-m-collapsed {
+  width: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+}
+.pf-v5-c-page .pf-v5-c-page__sidebar-body {
+  padding: 0;
+  min-height: 0;
+}
+.pf-v5-c-page .pf-v5-c-nav {
+  padding: 4px;
+}
+.pf-v5-c-page .pf-v5-c-nav__link {
+  min-height: 44px;
+  box-sizing: border-box;
+  margin-block: 3px 0;
+  padding: 10px 12px;
+  border-radius: var(--vc-radius-control);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0;
+  color: var(--vc-on-dark);
+}
+.pf-v5-c-page .pf-v5-c-nav__link:hover {
+  color: var(--vc-on-dark);
+  background: var(--vc-sidebar-hover);
+}
+.pf-v5-c-page .pf-v5-c-nav__link.pf-m-current {
+  color: var(--vc-petrol);
+  background: var(--vc-mint);
+  font-weight: 600;
+}
+.pf-v5-c-page .pf-v5-c-nav__link::before,
+.pf-v5-c-page .pf-v5-c-nav__link::after {
+  border: 0;
+}
+.pf-v5-c-page .pf-v5-c-nav__subnav {
+  margin: 4px 0 12px;
+  padding-inline: 8px 0;
+}
+.pf-v5-c-page .pf-v5-c-nav__link:focus-visible {
+  outline: 2px solid var(--vc-mint);
+  outline-offset: 2px;
+}
+.pf-v5-c-page > .pf-v5-c-masthead {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  display: grid;
+  grid-template: "identity account" 88px / var(--vc-sidebar-width) minmax(
+      0,
+      1fr
+    );
+  column-gap: 24px;
+  min-height: 0;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  --pf-v5-c-masthead--BackgroundColor: transparent;
+}
+.pf-v5-c-page .pf-v5-c-masthead__brand {
+  grid-area: identity;
+  align-self: start;
+  justify-self: start;
+  margin: 28px 0 0 28px;
+  z-index: 1;
+}
+.pf-v5-c-page .pf-v5-c-masthead__brand img {
+  width: 152px;
+  height: 40px;
+  object-fit: contain;
+}
+.pf-v5-c-page .pf-v5-c-masthead__toggle {
+  grid-area: identity;
+  align-self: start;
+  justify-self: end;
+  margin: 26px 12px 0 0;
+  z-index: 2;
+}
+.pf-v5-c-page .pf-v5-c-masthead .pf-v5-c-button {
+  color: var(--vc-petrol);
+}
+.pf-v5-c-page .pf-v5-c-masthead .pf-v5-c-masthead__toggle .pf-v5-c-button {
+  color: var(--vc-on-dark);
+  background: transparent;
+  padding: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--vc-radius-control);
+}
+.pf-v5-c-page
+  .pf-v5-c-masthead
+  .pf-v5-c-masthead__toggle
+  .pf-v5-c-button:hover {
+  background: var(--vc-sidebar-hover);
+}
+.pf-v5-c-page .pf-v5-c-masthead__content {
+  grid-area: account;
+  justify-self: stretch;
+  align-self: center;
+  min-width: 0;
+  margin: 0;
+  padding: 0 24px 0 0;
+}
+.pf-v5-c-page .pf-v5-c-masthead .pf-v5-c-toolbar {
+  background: transparent;
+  padding: 0;
+}
+.pf-v5-c-page .pf-v5-c-masthead .pf-v5-c-menu-toggle {
+  color: var(--vc-petrol);
+  background: #fcfdfb;
+  border: 1px solid var(--vc-border);
+  border-radius: var(--vc-radius-control);
+}
+.pf-v5-c-page > .pf-v5-c-page__main {
+  grid-area: main;
+  min-width: 0;
+  min-height: 0;
+  padding-inline: 0;
+  border-radius: var(--vc-radius-panel);
+}
+.pf-v5-c-page .pf-v5-c-page__main > .pf-v5-c-page__main-section {
+  padding-inline: clamp(20px, 3vw, 48px);
+}
+.pf-v5-c-page .pf-v5-c-page__main > .pf-v5-c-page__main-section:first-child {
+  padding-top: 24px;
+}
+@media (min-width: 1200px) {
+  .pf-v5-c-page.pf-m-resize-observer:has(
+    .pf-v5-c-page__sidebar.pf-m-collapsed
+  ) {
+    grid-template: "header" 88px "main" minmax(0, 1fr) / minmax(0, 1fr);
+    column-gap: 0;
+  }
+  .pf-v5-c-page:has(.pf-v5-c-page__sidebar.pf-m-collapsed) > .pf-v5-c-masthead {
+    grid-template: "toggle identity account" 88px / 44px 168px minmax(0, 1fr);
+    column-gap: 16px;
+  }
+  .pf-v5-c-page:has(.pf-v5-c-page__sidebar.pf-m-collapsed)
+    .pf-v5-c-masthead__brand {
+    margin: 0;
+    align-self: center;
+  }
+  .pf-v5-c-page:has(.pf-v5-c-page__sidebar.pf-m-collapsed)
+    .pf-v5-c-masthead__brand
+    img {
+    content: url("../brand/velcure-logo-petrol.svg");
+  }
+  .pf-v5-c-page:has(.pf-v5-c-page__sidebar.pf-m-collapsed)
+    .pf-v5-c-masthead__toggle {
+    grid-area: toggle;
+    margin: 0;
+    align-self: center;
+  }
+  .pf-v5-c-page:has(.pf-v5-c-page__sidebar.pf-m-collapsed)
+    .pf-v5-c-masthead__toggle
+    .pf-v5-c-button {
+    color: var(--vc-petrol);
+  }
+}
+@media (max-width: 1199px) {
+  .pf-v5-c-page.pf-m-resize-observer {
+    grid-template: "header" 72px "main" minmax(0, 1fr) / minmax(0, 1fr);
+    gap: 12px;
+  }
+  .pf-v5-c-page > .pf-v5-c-masthead {
+    grid-column: 1;
+    grid-template: "toggle identity account" 72px / 44px minmax(0, 1fr) auto;
+    gap: 8px;
+    padding-inline: 12px;
+    border-radius: var(--vc-radius-panel);
+    background: var(--vc-petrol);
+  }
+  .pf-v5-c-page .pf-v5-c-masthead__brand {
+    margin: 0;
+    align-self: center;
+  }
+  .pf-v5-c-page .pf-v5-c-masthead__brand img {
+    width: 140px;
+    height: 36px;
+  }
+  .pf-v5-c-page .pf-v5-c-masthead__toggle {
+    grid-area: toggle;
+    margin: 0;
+    align-self: center;
+  }
+  .pf-v5-c-page .pf-v5-c-masthead__content {
+    justify-self: end;
+    padding: 0;
+  }
+  .pf-v5-c-page .pf-v5-c-masthead .pf-v5-c-toolbar__content {
+    padding-inline: 0;
+  }
+  .pf-v5-c-page .pf-v5-c-masthead .pf-v5-c-menu-toggle {
+    color: var(--vc-on-dark);
+    background: var(--vc-sidebar-hover);
+    border-color: var(--vc-sidebar-line);
+  }
+  .pf-v5-c-page > .pf-v5-c-page__sidebar {
+    position: fixed;
+    top: 96px;
+    bottom: var(--vc-shell-gutter);
+    inset-inline-start: var(--vc-shell-gutter);
+    width: min(320px, calc(100vw - 24px));
+    max-width: none;
+    padding: 20px 16px;
+    border-radius: var(--vc-radius-frame);
+    z-index: 200;
+  }
+  .pf-v5-c-page > .pf-v5-c-page__sidebar.pf-m-collapsed {
+    display: none;
+  }
+  .pf-v5-c-page .pf-v5-c-page__main > .pf-v5-c-page__main-section {
+    padding-inline: 12px;
+  }
+}
+@media (max-width: 480px) {
+  .pf-v5-c-page .pf-v5-c-masthead__brand img {
+    width: 124px;
+  }
+  .pf-v5-c-page .pf-v5-c-masthead .pf-v5-c-avatar {
+    display: none;
+  }
+}

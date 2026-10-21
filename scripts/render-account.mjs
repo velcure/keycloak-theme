@@ -52,6 +52,7 @@ export async function renderAccount() {
   const styles = [
     ...css.map((name) => `/theme-resources/account/assets/${name}`),
     "/theme-resources/account/css/velcure-account.css",
+    "/theme-resources/account/css/account-layout.css",
     "/account-preview.css",
   ];
   const pages = JSON.parse(

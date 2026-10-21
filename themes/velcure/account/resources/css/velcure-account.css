@@ -51,29 +51,9 @@ body {
 .pf-v5-c-page {
   background: var(--vc-canvas);
 }
-.pf-v5-c-masthead {
-  --pf-v5-c-masthead--BackgroundColor: var(--vc-petrol);
-  background: var(--vc-petrol);
-  min-height: 84px;
-  padding-inline: 28px;
-  gap: 24px;
-}
-.pf-v5-c-masthead__brand img {
-  width: 150px;
-  height: 42px;
-  object-fit: contain;
-}
 
 .pf-v5-c-avatar {
   border: 2px solid #81a396;
-}
-.pf-v5-c-page__sidebar {
-  --pf-v5-c-page__sidebar--BackgroundColor: var(--vc-petrol);
-  background: var(--vc-petrol);
-  width: 272px;
-  padding: 16px 12px 28px;
-  border-radius: 0 0 24px 0;
-  box-shadow: none;
 }
 .pf-v5-c-nav {
   --pf-v5-c-nav__link--Color: #dcefe5;
@@ -83,25 +63,6 @@ body {
   --pf-v5-c-nav__link--m-current--BackgroundColor: #dcefe5;
   --pf-v5-c-nav__link--m-current--after--BorderColor: transparent;
   --pf-v5-c-nav__subnav--BorderColor: transparent;
-}
-.pf-v5-c-nav__link {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  line-height: 1.5;
-  border-radius: 12px;
-  margin-block: 4px;
-  padding: 12px 16px;
-}
-.pf-v5-c-nav__link::before,
-.pf-v5-c-nav__link::after {
-  border: 0;
-}
-.pf-v5-c-nav__subnav {
-  margin-inline: 0;
-  padding-inline: 8px 0;
-}
-.pf-v5-c-nav__subnav .pf-v5-c-nav__link {
-  font-weight: 400;
 }
 .pf-v5-c-page__main {
   min-width: 0;
@@ -243,21 +204,7 @@ input[type="radio"] {
   background: var(--vc-canvas);
   color: var(--vc-petrol);
 }
-@media (min-width: 1600px) {
-  .pf-v5-c-page__main {
-    padding-inline: clamp(0px, 3vw, 80px);
-  }
-}
 @media (max-width: 767px) {
-  .pf-v5-c-masthead {
-    min-height: 72px;
-    padding-inline: 16px;
-    gap: 12px;
-  }
-  .pf-v5-c-masthead__brand img {
-    width: 124px;
-    height: 36px;
-  }
   .pf-v5-c-page__main-section {
     padding: 24px 20px;
   }
@@ -326,10 +273,6 @@ input[type="radio"] {
   border-radius: 10px;
   border: 0;
 }
-.pf-v5-c-masthead .pf-v5-c-menu-toggle:not(.pf-m-plain) {
-  border-color: #17413d;
-  background: #17413d;
-}
 .pf-v5-c-nav__item.pf-m-expandable::before {
   border: 0;
 }
@@ -379,18 +322,4 @@ input[type="radio"] {
   padding: 14px 18px;
   font-size: 14px;
   margin: 0;
-}
-
-.pf-v5-c-masthead .pf-v5-c-button {
-  color: #f2f6f3;
-}
-.pf-v5-c-masthead .pf-v5-c-menu-toggle {
-  color: #f2f6f3;
-  background: #17413d;
-  border-radius: 12px;
-  min-height: 44px;
-}
-.pf-v5-c-masthead .pf-v5-c-menu-toggle::before,
-.pf-v5-c-masthead .pf-v5-c-menu-toggle::after {
-  border: 0;
 }

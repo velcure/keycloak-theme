@@ -27,6 +27,37 @@ test("native account routes load with Velcure assets and working API authorizati
       failed.push(`${response.status()} ${response.url()}`);
   });
   await login(page);
+  const frame = await page
+    .locator(".pf-v5-c-page__sidebar")
+    .evaluate((element) => {
+      const box = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      return {
+        x: box.x,
+        y: box.y,
+        bottom: innerHeight - box.bottom,
+        radii: [
+          style.borderTopLeftRadius,
+          style.borderTopRightRadius,
+          style.borderBottomLeftRadius,
+          style.borderBottomRightRadius,
+        ],
+      };
+    });
+  expect(frame.x).toBe(12);
+  expect(frame.y).toBe(12);
+  expect(frame.bottom).toBe(12);
+  expect(frame.radii).toEqual(["28px", "28px", "28px", "28px"]);
+  await page.locator("#nav-toggle").click();
+  await expect(page.locator("#nav-toggle")).toHaveAttribute(
+    "aria-expanded",
+    "false",
+  );
+  await page.locator("#nav-toggle").click();
+  await expect(page.locator("#nav-toggle")).toHaveAttribute(
+    "aria-expanded",
+    "true",
+  );
   for (const entry of pages) {
     await page.goto(`${base}${entry.path}`);
     await expect(page.getByTestId("page-heading")).toBeVisible();
@@ -39,7 +70,7 @@ test("native account routes load with Velcure assets and working API authorizati
     ).toHaveCount(0);
     expect(
       await page
-        .locator(".pf-v5-c-masthead")
+        .locator(".pf-v5-c-page__sidebar")
         .evaluate((element) => getComputedStyle(element).backgroundColor),
     ).toBe("rgb(3, 47, 46)");
   }
@@ -114,6 +145,24 @@ test("native mobile navigation works and account pages fit a narrow viewport", a
     "aria-expanded",
     "true",
   );
+  const drawer = await page
+    .locator(".pf-v5-c-page__sidebar")
+    .evaluate((element) => {
+      const box = element.getBoundingClientRect();
+      const style = getComputedStyle(element);
+      return {
+        x: box.x,
+        y: box.y,
+        right: innerWidth - box.right,
+        bottom: innerHeight - box.bottom,
+        radius: style.borderRadius,
+      };
+    });
+  expect(drawer.x).toBe(12);
+  expect(drawer.y).toBe(96);
+  expect(drawer.right).toBeGreaterThanOrEqual(12);
+  expect(drawer.bottom).toBe(12);
+  expect(drawer.radius).toBe("28px");
   await expect(
     page.getByRole("link", { name: "Persönliche Angaben", exact: true }),
   ).toBeVisible();

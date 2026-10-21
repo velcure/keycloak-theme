@@ -1,45 +1,6 @@
-/* Native DOM captures do not run React's ResizeObserver. These studio-only
-   layout rules reproduce its sidebar and masthead states at the same breakpoint. */
-[data-account-preview] .pf-v5-c-page {
-  grid-template: "header header" 84px "nav main" minmax(0, 1fr) / 272px minmax(
-      0,
-      1fr
-    );
-}
-[data-account-preview]
-  .pf-v5-c-page:has(.pf-v5-c-page__sidebar.pf-m-collapsed) {
-  grid-template-columns: 0 minmax(0, 1fr);
-}
-[data-account-preview] .pf-v5-c-page__sidebar {
-  grid-area: nav;
-}
-[data-account-preview] .pf-v5-c-page__sidebar.pf-m-collapsed {
-  padding: 0;
-  width: 0;
-}
-[data-account-preview] .pf-v5-c-page__main {
-  grid-area: main;
-  min-width: 0;
-}
-[data-account-preview] .pf-v5-c-masthead {
-  min-width: 0;
-}
+/* Only mimic the native toolbar's JS-managed visibility in static captures.
+   All shell geometry is shared with the actual Keycloak account theme. */
 @media (max-width: 1199px) {
-  [data-account-preview] .pf-v5-c-page,
-  [data-account-preview]
-    .pf-v5-c-page:has(.pf-v5-c-page__sidebar.pf-m-collapsed) {
-    grid-template: "header" 84px "main" minmax(0, 1fr) / minmax(0, 1fr);
-  }
-  [data-account-preview] .pf-v5-c-page__sidebar {
-    position: fixed;
-    top: 84px;
-    bottom: 0;
-    inset-inline-start: 0;
-    z-index: 200;
-  }
-  [data-account-preview] .pf-v5-c-page__sidebar.pf-m-collapsed {
-    display: none;
-  }
   [data-account-preview]
     .pf-v5-c-toolbar__item:has([data-testid="options-toggle"]) {
     display: none;
@@ -47,21 +8,5 @@
   [data-account-preview]
     .pf-v5-c-toolbar__item:has([data-testid="options-kebab-toggle"]) {
     display: block;
-  }
-  [data-account-preview] .pf-v5-c-masthead__content {
-    min-width: 0;
-  }
-  [data-account-preview] .pf-v5-c-toolbar__content {
-    padding-inline: 0;
-  }
-}
-@media (max-width: 767px) {
-  [data-account-preview] .pf-v5-c-page,
-  [data-account-preview]
-    .pf-v5-c-page:has(.pf-v5-c-page__sidebar.pf-m-collapsed) {
-    grid-template-rows: 72px minmax(0, 1fr);
-  }
-  [data-account-preview] .pf-v5-c-page__sidebar {
-    top: 72px;
   }
 }

@@ -54,7 +54,7 @@ pnpm test:e2e
 
 ## Kontoverwaltung
 
-Das Account-Theme erweitert die mitgelieferte `keycloak.v3` Account Console. Keycloaks React-Anwendung, Account-API, OIDC-Anmeldung und Berechtigungsprüfungen bleiben unverändert. Das Theme ergänzt Logo, lokale Schriften, Petrol-/Mint-Farben, Navigation, Formulare, Tabellen, Dialoge und responsive Abstände. Deutsche Texte verwenden die Du-Ansprache.
+Das Account-Theme erweitert die mitgelieferte `keycloak.v3` Account Console. Keycloaks React-Anwendung, Account-API, OIDC-Anmeldung und Berechtigungsprüfungen bleiben unverändert. Das Theme ergänzt Logo, lokale Schriften, Petrol-/Mint-Farben, Navigation, Formulare, Tabellen, Dialoge und responsive Abstände. Die Navigation übernimmt den frei stehenden 28-px-Rahmen und die 12-px-Außenabstände aus den Brand Guidelines. Logo und Navigation bilden auf Desktop eine gemeinsame Petrol-Fläche; auf Mobil öffnet sich ein separat abgerundetes Menü. Native Console und Studio verwenden dafür dieselbe Datei `account-layout.css`. Deutsche Texte verwenden die Du-Ansprache.
 
 Abgedeckt sind persönliche Angaben, Passwort, Authenticator, Passkeys, Wiederherstellungscodes, Geräte und Sitzungen, verknüpfte Konten, Anwendungen, Gruppen, Organisationen, Ressourcen/Freigaben sowie digitale Nachweise. Die Verfügbarkeit hängt von Realm-Funktionen, Required Actions, Rollen und konfigurierten Anbietern ab. Das Theme aktiviert keine zusätzlichen Rechte oder Produktionsfunktionen.
 
