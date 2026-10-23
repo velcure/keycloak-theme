@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/velcure/keycloak-theme/compare/v0.1.1...v0.1.2) (2026-10-23)
+
+
+### Bug Fixes
+
+* prebuild optimized Keycloak image for PostgreSQL ([#4](https://github.com/velcure/keycloak-theme/issues/4)) ([702fb78](https://github.com/velcure/keycloak-theme/commit/702fb782ab3c137ffee205dbcf8bf718809c59ce))
+
 ## [0.1.1](https://github.com/velcure/keycloak-theme/compare/v0.1.0...v0.1.1) (2026-10-21)
 
 
