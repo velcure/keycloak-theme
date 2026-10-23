@@ -76,12 +76,13 @@ test("shared login layout preserves all upstream authentication logic", async ()
 });
 test("container and preview fixture use the explicitly tested Keycloak version", async () => {
   const config = JSON.parse(await read("keycloak-version.json"));
-  assert.match(
-    await read("Dockerfile"),
-    new RegExp(
-      `FROM quay.io/keycloak/keycloak:${config.version.replaceAll(".", "\\.")}`,
+  const images = [
+    ...(await read("Dockerfile")).matchAll(
+      /^FROM quay\.io\/keycloak\/keycloak:(\S+)/gm,
     ),
-  );
+  ];
+  assert.ok(images.length > 0);
+  for (const [, version] of images) assert.equal(version, config.version);
   assert.ok(
     config.themesSha256 && config.vendorSha256 && config.freemarkerSha256,
   );
