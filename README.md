@@ -52,6 +52,14 @@ pnpm test:e2e
 - Browser-Tests prüfen SSR ohne JavaScript, Passwortsichtbarkeit, Mobilansicht und E-Mail-Formate.
 - CI stellt `artifacts/velcure-keycloak-theme.jar` als Download bereit.
 
+Der Produktionsimage-Test benötigt Docker und curl:
+
+```sh
+bash scripts/test-optimized-image.sh
+```
+
+Er baut das Produktionsimage, startet es mit `start --optimized` und einer isolierten PostgreSQL-Datenbank und prüft Readiness, Metrics, OIDC-Discovery sowie das im Image enthaltene Login-Theme. Nach einem Neustart werden dieselben Endpunkte erneut geprüft. Der Test schlägt bei einer erneuten Keycloak-Augmentierung oder Entwicklungsmodus fehl. Testcontainer und Datenbankvolumes werden anschließend entfernt. Die Ports 18082 und 19002 müssen dafür frei sein; die laufende Theme-Vorschau und Core-Instanz bleiben unabhängig.
+
 ## Kontoverwaltung
 
 Das Account-Theme erweitert die mitgelieferte `keycloak.v3` Account Console. Keycloaks React-Anwendung, Account-API, OIDC-Anmeldung und Berechtigungsprüfungen bleiben unverändert. Das Theme ergänzt Logo, lokale Schriften, Petrol-/Mint-Farben, Navigation, Formulare, Tabellen, Dialoge und responsive Abstände. Die Navigation übernimmt den frei stehenden 28-px-Rahmen und die 12-px-Außenabstände aus den Brand Guidelines. Logo und Navigation bilden auf Desktop eine gemeinsame Petrol-Fläche; auf Mobil öffnet sich ein separat abgerundetes Menü. Native Console und Studio verwenden dafür dieselbe Datei `account-layout.css`. Deutsche Texte verwenden die Du-Ansprache.
@@ -82,9 +90,15 @@ Für die Integration lautet die Realm-Konfiguration:
 Es gibt zwei Installationswege:
 
 1. **Theme-JAR** in ein eigenes Keycloak-Image unter `/opt/keycloak/providers/` übernehmen; anschließend den üblichen Keycloak-Image-Build durchführen.
-2. **Dieses Dockerfile** verwenden. Es erweitert das offizielle Keycloak-Image und kopiert das native Theme nach `/opt/keycloak/themes/velcure`.
+2. **Dieses Dockerfile** verwenden. Es erweitert das offizielle Keycloak-Image, installiert das native Theme und führt `kc.sh build` bereits beim Image-Build aus. Das Produktionsimage ist für PostgreSQL mit aktivierten Health- und Metrics-Endpunkten vorbereitet.
 
 Das gewünschte Image über `spec.image` des Keycloak-Operators setzen. Im betreffenden Realm unter **Realm settings → Themes** **Login theme**, **Account theme** und **Email theme** auf `velcure` stellen. Theme-Änderungen benötigen keine Anpassung der Browser-Flows. SMTP-Konfiguration und produktive Benutzer bleiben beim Realm.
+
+Beim optimierten Image `spec.startOptimized: true` setzen. Datenbankadresse und Zugangsdaten, Hostname, TLS, HTTP und Proxy-Konfiguration bleiben im Operator-CR. Health und Metrics sind bereits im Image aktiviert; zusätzliche Build-Optionen wie Features oder Provider benötigen einen erneuten Image-Build. Die Keycloak-Version des Images muss zur Operator-Version passen. Siehe [Keycloak: Custom images](https://www.keycloak.org/operator/customizing-keycloak) und [Container-Build](https://www.keycloak.org/server/containers).
+
+**Umstellung bestehender Installationen:** Releases bis einschließlich `0.1.1` enthalten keinen vorbereitenden Build und benötigen weiterhin `startOptimized: false`. Erst zusammen mit einem optimierten Release-Image auf `true` umstellen. Ein neues Image allein ändert keine Cluster-Konfiguration. Produktionskonfigurationen bleiben bei den Standard-Features von Keycloak; die zusätzlichen Vorschau-Features werden nicht eingebaut.
+
+Der Docker-Build-Target `development` enthält das Theme ohne vorbereitenden Build. `compose.yaml` verwendet ausschließlich diesen Target, damit die lokale Vorschau weiterhin `start-dev`, eine lokale Datenbank und ihre zusätzlichen Test-Features nutzen kann. Der standardmäßige letzte Target `production` wird von der GHCR-Pipeline gebaut.
 
 ### Container-Tags
 
@@ -109,7 +123,7 @@ Produktive Operator-Konfigurationen sollten eine freigegebene Version oder einen
 ### Release-Please-Ablauf
 
 1. Conventional Commits auf `main` starten Typecheck, Biome, FreeMarker-, Browser- und Build-Prüfungen.
-2. Erst nach erfolgreichen Prüfungen veröffentlicht CI das Image als `main` und `sha-<Commit>` auf GHCR, einschließlich SBOM und Build-Provenienz.
+2. Erst nach erfolgreichen Prüfungen einschließlich des optimierten PostgreSQL-Starttests veröffentlicht CI das Image als `main` und `sha-<Commit>` auf GHCR, einschließlich SBOM und Build-Provenienz.
 3. Die bestehende GitHub-App `velcure-release` erstellt oder aktualisiert den Release-PR mit Versionsnummer und Changelog. Ihre PRs starten die regulären Checks.
 4. Nach dem Merge des Release-PRs läuft die CI erneut. Release Please erstellt den Git-Tag und das GitHub-Release; anschließend erhalten **dieselben geprüften Image-Bytes** die Versionstags und `latest`. Es wird kein zweites Release-Image gebaut.
 5. Das geprüfte Theme-JAR und `SHA256SUMS` werden als Release-Downloads angehängt.
