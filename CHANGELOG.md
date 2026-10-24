@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/velcure/keycloak-theme/compare/v0.1.2...v0.1.3) (2026-10-24)
+
+
+### Bug Fixes
+
+* **i18n:** deutsche Login-Texte durchgängig in der Du-Form ([6564441](https://github.com/velcure/keycloak-theme/commit/6564441d680a21262e50823e6eeba682f725119e))
+
 ## [0.1.2](https://github.com/velcure/keycloak-theme/compare/v0.1.1...v0.1.2) (2026-10-23)
 
 
