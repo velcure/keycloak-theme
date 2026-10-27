@@ -66,5 +66,28 @@
 
         <@validator.templates/>
         <@validator.script field="password"/>
+        <#-- An invite link opens this form with login_hint=<invited address>
+             and Keycloak prefills the e-mail from it. As long as the field
+             still holds that address and shows no error, it stays fixed:
+             the invite only works for that address. -->
+        <#if !messagesPerField.existsError('email')>
+            <script>
+                (function () {
+                    var hint = new URLSearchParams(window.location.search).get("login_hint");
+                    var email = document.querySelector('#kc-register-form input[name="email"]');
+                    if (!hint || !email) return;
+                    if (email.value.trim().toLowerCase() !== hint.trim().toLowerCase()) return;
+                    email.readOnly = true;
+                    email.closest(".pf-v5-c-form-control")?.classList.add("pf-m-readonly");
+                    var note = document.createElement("p");
+                    note.id = "vc-email-from-invite";
+                    note.className = "vc-field-note";
+                    note.textContent = "${msg("velcureEmailFromInvite")?js_string}";
+                    email.setAttribute("aria-describedby",
+                        ((email.getAttribute("aria-describedby") || "") + " " + note.id).trim());
+                    email.closest(".pf-v5-c-form__group")?.appendChild(note);
+                })();
+            </script>
+        </#if>
     </#if>
 </@layout.registrationLayout>

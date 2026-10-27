@@ -186,6 +186,18 @@ body#keycloak-bg {
   outline-offset: 2px;
   border-color: var(--vc-petrol);
 }
+#keycloak-bg .pf-v5-c-form-control.pf-m-readonly {
+  background: var(--vc-canvas);
+}
+#keycloak-bg .pf-v5-c-form-control.pf-m-readonly input {
+  color: var(--vc-muted);
+}
+#keycloak-bg .vc-field-note {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--vc-muted);
+}
 #keycloak-bg .pf-v5-c-form-control.pf-m-error {
   border-color: #b12c38;
 }

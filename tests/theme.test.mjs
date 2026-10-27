@@ -132,3 +132,9 @@ test("Account visual fixtures are versioned, token-free and use only isolated as
     assert.match(methods, /passwordless-categ-title/);
   }
 });
+test("registration keeps an invited address fixed, only while it matches login_hint", async () => {
+  const body = await read(".cache/previews/login/register/de-default.html");
+  assert.match(body, /get\("login_hint"\)/);
+  assert.match(body, /email\.readOnly = true/);
+  assert.match(body, /Die Adresse kommt aus deiner Einladung/);
+});
