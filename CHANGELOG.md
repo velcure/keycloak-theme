@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/velcure/keycloak-theme/compare/v0.1.3...v0.1.4) (2026-10-27)
+
+
+### Features
+
+* **register:** eingeladene E-Mail-Adresse festhalten ([5e246c5](https://github.com/velcure/keycloak-theme/commit/5e246c51b873a5f43d95733046bb67b5c066a115))
+
 ## [0.1.3](https://github.com/velcure/keycloak-theme/compare/v0.1.2...v0.1.3) (2026-10-24)
 
 
