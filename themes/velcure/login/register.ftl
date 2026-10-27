@@ -34,6 +34,24 @@
                 </div>
             </#if>
 
+            <#-- The address belongs to an account already (e.g. created after the
+                 invite was sent): offer the sign-in right at the field. The
+                 login form keeps the flow's login_hint. -->
+            <#assign vcEmailError = messagesPerField.existsError('email')?then(messagesPerField.get('email'), "")>
+            <#if vcEmailError?has_content && (vcEmailError?contains(msg("emailExistsMessage")) || vcEmailError?contains(msg("usernameExistsMessage")))>
+                <div id="vc-email-exists" class="vc-field-action">
+                    <a id="vc-email-exists-login" class="${properties.kcButtonSecondaryClass!} ${properties.kcButtonBlockClass!}" href="${url.loginUrl}">${msg("velcureSignInWithThisAddress")}</a>
+                </div>
+                <script>
+                    (function () {
+                        var action = document.getElementById("vc-email-exists");
+                        var email = document.querySelector('#kc-register-form input[name="email"]');
+                        var group = email && email.closest(".pf-v5-c-form__group");
+                        if (action && group) group.appendChild(action);
+                    })();
+                </script>
+            </#if>
+
             <p class="vc-register-notice">${msg("velcurePrivacyBefore", msg("doRegister"))} <a href="https://www.velcure.de/datenschutz" target="_blank" rel="noopener noreferrer">${msg("velcurePrivacyLink")}</a>${msg("velcurePrivacyAfter")}</p>
 
             <#if recaptchaRequired?? && !(recaptchaVisible!false)>

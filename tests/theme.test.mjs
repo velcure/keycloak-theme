@@ -138,3 +138,13 @@ test("registration keeps an invited address fixed, only while it matches login_h
   assert.match(body, /email\.readOnly = true/);
   assert.match(body, /Die Adresse kommt aus deiner Einladung/);
 });
+
+test("registration offers the sign-in when the address has an account already", async () => {
+  const error = await read(".cache/previews/login/register/de-error.html");
+  assert.match(error, /id="vc-email-exists-login"/);
+  assert.match(error, /Mit dieser Adresse anmelden/);
+  const errorEn = await read(".cache/previews/login/register/en-error.html");
+  assert.match(errorEn, /Sign in with this address/);
+  const plain = await read(".cache/previews/login/register/de-default.html");
+  assert.doesNotMatch(plain, /vc-email-exists/);
+});

@@ -189,14 +189,14 @@ body#keycloak-bg {
 #keycloak-bg .pf-v5-c-form-control.pf-m-readonly {
   background: var(--vc-canvas);
 }
-#keycloak-bg .pf-v5-c-form-control.pf-m-readonly input {
-  color: var(--vc-muted);
-}
 #keycloak-bg .vc-field-note {
   margin: 6px 0 0;
   font-size: 12px;
   line-height: 1.5;
   color: var(--vc-muted);
+}
+#keycloak-bg .vc-field-action {
+  margin: 10px 0 0;
 }
 #keycloak-bg .pf-v5-c-form-control.pf-m-error {
   border-color: #b12c38;
@@ -724,4 +724,7 @@ body#keycloak-bg {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+#keycloak-bg .pf-v5-c-form-control.pf-m-readonly input {
+  color: var(--vc-muted);
 }
