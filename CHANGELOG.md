@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/velcure/keycloak-theme/compare/v0.1.4...v0.1.5) (2026-10-28)
+
+
+### Features
+
+* **register:** bei vorhandenem Konto direkt zur Anmeldung ([b1f9969](https://github.com/velcure/keycloak-theme/commit/b1f99699ef466535d723b257a95f9ab4e9832868))
+
 ## [0.1.4](https://github.com/velcure/keycloak-theme/compare/v0.1.3...v0.1.4) (2026-10-27)
 
 
