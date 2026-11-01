@@ -31,9 +31,9 @@
     "astro": "7.4.4"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.15",
+    "@biomejs/biome": "2.6.4",
     "@playwright/test": "1.64.1",
-    "@types/node": "26.6.5",
+    "@types/node": "26.6.6",
     "qrcode": "1.5.4",
     "typescript": "7.0.2"
   }
